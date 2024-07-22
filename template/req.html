@@ -12,14 +12,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/proavipatil/data@main/fs/src/plyr.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@500;700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body>
     <nav>
         <div class="nleft">
-            <a href="https://telegram.me/SK_MoviesOffl">
+            <a href="#">
                 <h3 id="heading" style="z-index: 100;" class="magnet title">SK Movies Official</h3>
             </a>
         </div>
@@ -29,29 +29,30 @@
     <div class="outer">
         <div class="inner">
             <div class="main" id="main">
-                <video id="player" class="player" src="{{file_url}}" type="video/mp4" playsinline controls width="100%"></video>
-                <div class="player"></div>
-                <div class="file-name">
+                <video id="player" class="player" src="{{file_url}}" type="video/mp4" playsinline controls preload="metadata" width="100%"></video>
+                <div class="file-info">
                     <h4 style="display: inline;">File Name: </h4>
                     <p style="display: inline;" id="myDiv">{{file_name}}</p><br><br>
                     <h4 style="display: inline;">File Size: </h4>
-                    <p style="display: inline;" id="fileSize"></p>
+                    <p style="display: inline;" id="fileSize">{{file_size}}</p><br><br>
+                    <h4 style="display: inline;">Duration: </h4>
+                    <p style="display: inline;" id="duration"></p>
                 </div>
                 <div class="downloadBtn">
                     <button class="magnet" onclick="copyStreamLink()">
-                        <img src="images/CM4Y586-link.png" alt="Copy Link">copy link
+                        <img src="https://i.ibb.co/dP4DbFw/CM4-Y586-link.png" alt="Copy Link">copy link
                     </button>
                     <button class="magnet" onclick="streamDownload()">
-                        <img style="height: 30px;" src="images/RjzYttX-dl.png" alt="">download video
+                        <img style="height: 30px;" src="https://i.ibb.co/GJfznMB/Rjz-Ytt-X-dl.png" alt="">download video
                     </button>
                     <button class="magnet" onclick="vlc_player()">
-                        <img src="images/px6fQs1-vlc.png" alt="">watch in VLC PLAYER
+                        <img src="https://i.ibb.co/qy0XnTC/px6f-Qs1-vlc.png" alt="">watch in VLC PLAYER
                     </button>
                     <button class="magnet" onclick="mx_player()">
-                        <img src="images/41WvtQ3-mx.png" alt="">watch in MX PLAYER
+                        <img src="https://i.ibb.co/5M1n8WB/41-Wvt-Q3-mx.png" alt="">watch in MX PLAYER
                     </button>
                     <button class="magnet" onclick="playit_player()">
-                        <img src="images/RVGWYJFF-playit.png" alt="">watch in PLAYit
+                        <img src="https://i.ibb.co/0yVD3fL/RVGWYJFF-playit.png" alt="">watch in PLAYit
                     </button>
                 </div>
             </div>
@@ -59,11 +60,20 @@
     </div>
 
     <script>
+        const videoPlayer = document.getElementById('player');
+
+        videoPlayer.addEventListener('loadedmetadata', () => {
+            const duration = videoPlayer.duration;
+            const minutes = Math.floor(duration / 60);
+            const seconds = Math.floor(duration % 60).toString().padStart(2, '0');
+            document.getElementById('duration').innerText = `${minutes}:${seconds}`;
+        });
+
         function copyStreamLink() {
             const link = "{{file_url}}";
             navigator.clipboard.writeText(link).then(() => {
                 alert("Link copied to clipboard!");
-            }, () => {
+            }).catch(() => {
                 alert("Failed to copy the link.");
             });
         }
@@ -77,15 +87,16 @@
         }
 
         function mx_player() {
-            window.location.href = "intent://{{file_url}}#Intent;package=com.mxtech.videoplayer.ad;S.title={{file_name}};end";
+            window.location.href = `intent://{{file_url}}#Intent;package=com.mxtech.videoplayer.ad;S.title={{file_name}};end`;
         }
 
         function playit_player() {
-            window.location.href = "playit://{{file_url}}";
+            window.location.href = `playit://{{file_url}}`;
         }
 
         document.getElementById('fileSize').innerText = "{{file_size}}"; // assuming file_size is provided by the server-side code
     </script>
+
 
         <footer>
             <center>
